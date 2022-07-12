@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Inject,
+  Patch,
   Post,
   Put,
   Query,
@@ -25,8 +26,12 @@ export class UserController {
   updateUser(@Body() body) {
     return this.service.updateUser(body);
   }
+  @Patch()
+  updateUserPassword(@Body() body) {
+    return this.service.updatePassword(body);
+  }
   @Get()
   queryUsers() {
-    return this.service.updateUser();
+    return this.service.queryUsers();
   }
 }
