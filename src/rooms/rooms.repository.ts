@@ -22,7 +22,10 @@ export class RoomsRepository {
   }
   async queryRooms() {
     const allRooms = await this.prisma.room.findMany();
-    logger.info(allRooms);
+    allRooms.forEach((room, i) => {
+      delete allRooms[i].password;
+    });
+    console.log(allRooms);
     return allRooms;
   }
 }
