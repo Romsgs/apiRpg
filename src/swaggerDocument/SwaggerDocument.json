@@ -1,0 +1,365 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sample API",
+    "description": "<h2>Documentação para uso da API de pagamento de TED, que utiliza como intermediário o Banco Rendimento. </h2> <br> esta api utiliza serviço de mensageria baseada em fila - <strong>Kafka e HTTP</strong>",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://api.example.com/v1",
+      "description": "Api dedicada ao desafio para novo qesher front-ender"
+    }
+  ],
+  "paths": {
+    "/account/querybyip": {
+      "get": {
+        "summary": "busca por todas as contas que a qesh controla",
+        "description": "todas as contas que foram criadas pela qesh, aparecerão na resposta desta requisição.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "PaginaAtual",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0"
+          },
+          {
+            "in": "query",
+            "name": "itensPorPagina",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "100"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array contendo uma conta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "inscricaoNacionalIP": {
+                        "type": "string",
+                        "example": "255.255.255.255"
+                      },
+                      "pessoa": {
+                        "type": "object",
+                        "properties": {
+                          "inscricaoNacional": {
+                            "type": "string",
+                            "example": "31818873000130"
+                          },
+                          "nome": {
+                            "type": "string",
+                            "example": "João Dos Santos"
+                          }
+                        }
+                      },
+                      "conta": {
+                        "type": "object",
+                        "properties": {
+                          "numeroConta": {
+                            "type": "string",
+                            "example": "159753"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Bloqueada"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contas não encontradas"
+          }
+        }
+      }
+    },
+    "/account/getByTypeAndValue": {
+      "get": {
+        "summary": "busca por todas as contas que a qesh controla",
+        "description": "<p> Neste endpoint, você pode buscar por contas individuais através do tipo de busca pelos seguintes valores no campo <strong>tipoConsulta:</strong> </p> <ul><li><strong> InscricaoNacional </strong></li><li><strong> Conta </strong></li><li><strong> Nome </strong></li></ul> <br> <p> E no campo <strong>valorConsulta </strong> voce pode passar respectivamente os relativos valores. <br> exemplo: </p><ul><li> 57459468061 </li><li> 159753</li><li> João dos Santos </li></ul>",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "valorConsulta",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "159753 - João dos Santos - 57459468061"
+          },
+          {
+            "in": "query",
+            "name": "tipoConsulta",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Conta - Nome - InscricaoNacional"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array contendo uma conta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "inscricaoNacionalIP": {
+                        "type": "string",
+                        "example": "255.255.255.255"
+                      },
+                      "pessoa": {
+                        "type": "object",
+                        "properties": {
+                          "inscricaoNacional": {
+                            "type": "string",
+                            "example": "31818873000130"
+                          },
+                          "nome": {
+                            "type": "string",
+                            "example": "João Dos Santos"
+                          }
+                        }
+                      },
+                      "conta": {
+                        "type": "object",
+                        "properties": {
+                          "numeroConta": {
+                            "type": "string",
+                            "example": "159753"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Bloqueada"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contas não encontradas"
+          }
+        }
+      }
+    },
+    "/account": {
+      "post": {
+        "summary": "criar uma conta no Banco Rendimento",
+        "description": "Neste endpoint, é possível a criação de contas dentro do sistema do Banco Rendimento",
+        "requestBody": {
+          "description": "asd",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conta": {
+                    "type": "object",
+                    "properties": {
+                      "numeroConta": {
+                        "type": "string",
+                        "example": "159753"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": " '1' // 1 = Ativa, 2 = Bloqueada, 3 = Encerrada"
+                      }
+                    }
+                  },
+                  "pessoa": {
+                    "type": "object",
+                    "properties": {
+                      "tipoPessoa": {
+                        "type": "string",
+                        "example": " 'F' // 'F' = fisica,'J'= Juridica"
+                      },
+                      "nome": {
+                        "type": "string",
+                        "example": "Nome da conta"
+                      },
+                      "inscricaoNacional": {
+                        "type": "string",
+                        "example": "57459468061"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "1"
+          },
+          "409": {
+            "description": "Conta já existente"
+          }
+        }
+      }
+    },
+    "/account/changeNamesStatus": {
+      "put": {
+        "summary": "Altera o Nome e o Status",
+        "description": "Para alterar o nome da conta, juntamente com o status de 1 = ativa, 2 = bloqueada ou 3 = encerrada. a query contaPag recebe o número da conta a ser alterada",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "contaPag",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 159753
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "body contendo Conta e Pessoa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "asd",
+                "type": "object",
+                "properties": {
+                  "conta": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "Cancelada"
+                      }
+                    }
+                  },
+                  "pessoa": {
+                    "type": "object",
+                    "properties": {
+                      "nome": {
+                        "type": "string",
+                        "example": "João da María"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "1"
+          }
+        }
+      }
+    },
+    "/account/changeNames": {
+      "put": {
+        "summary": "Altera o Nome da conta alvo",
+        "description": "Para alterar o nome da conta, a query contaPag recebe o número da conta a ser alterada",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "contaPag",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "159753"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "body contendo Pessoa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "asd",
+                "type": "object",
+                "properties": {
+                  "pessoa": {
+                    "type": "object",
+                    "properties": {
+                      "nome": {
+                        "type": "string",
+                        "example": "João da María"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "1"
+          }
+        }
+      }
+    },
+    "/account/changeStatus": {
+      "put": {
+        "summary": "Altera o Status da conta alvo",
+        "description": "Para alterar o status de 1 = ativa, 2 = bloqueada ou 3 = encerrada. a query contaPag recebe o número da conta a ser alterada",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "contaPag",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "159753"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "body contendo Conta e Pessoa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "asd",
+                "type": "object",
+                "properties": {
+                  "conta": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "Cancelada"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "1"
+          }
+        }
+      }
+    }
+  }
+}
