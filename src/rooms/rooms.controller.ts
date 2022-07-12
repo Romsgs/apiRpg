@@ -5,13 +5,14 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Post,
   Query,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 @Controller('room')
 export class RoomsController {
-  constructor(private service: RoomsService) {}
+  constructor(@Inject(RoomsService) private service: RoomsService) {}
   @Post()
   createRoom(@Body() body: any) {
     try {

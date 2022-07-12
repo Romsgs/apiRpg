@@ -28,6 +28,8 @@
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "^4.0.0",
     "argon2": "^0.28.7",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "pino": "^8.1.0",
     "prisma": "^4.0.0",
     "reflect-metadata": "^0.1.13",

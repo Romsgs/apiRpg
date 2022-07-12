@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 @Injectable()
 export class UserRepository {
-  constructor(@Inject() private prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
   async createUser(userData) {
     try {
       userData.password = argon.hash(userData.password);

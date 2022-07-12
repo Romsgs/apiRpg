@@ -3,7 +3,7 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(@Inject() private repository: UserRepository) {}
+  constructor(@Inject(UserRepository) private repository: UserRepository) {}
   createUser(body) {
     try {
       return this.repository.createUser(body);

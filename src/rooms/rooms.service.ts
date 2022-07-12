@@ -3,7 +3,7 @@ import { RoomsRepository } from './rooms.repository';
 import argon from 'argon2';
 @Injectable()
 export class RoomsService {
-  constructor(@Inject() private repository: RoomsRepository) {}
+  constructor(@Inject(RoomsRepository) private repository: RoomsRepository) {}
   makeRoom(data) {
     try {
       data.password = argon.hash(data.password);

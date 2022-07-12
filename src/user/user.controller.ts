@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(@Inject() private service: UserService) {}
+  constructor(@Inject(UserService) private service: UserService) {}
   @Post()
   createUser(@Body() body) {
     return this.service.createUser(body);

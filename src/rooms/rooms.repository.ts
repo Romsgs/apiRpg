@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RoomsRepository {
-  constructor(@Inject() private prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
   async createRoom(roomConfig) {
     const room = await this.prisma.room.create({
       data: {
