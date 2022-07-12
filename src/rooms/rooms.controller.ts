@@ -32,7 +32,9 @@ export class RoomsController {
   @Delete()
   deleteRoom(@Query() id: IDeleteRoomDTO) {
     try {
-      return this.service.deleteRoom(id);
+      console.log(id.id);
+      this.service.deleteRoom(id.id);
+      return 'OK';
     } catch (error) {
       throw new HttpException('not found', HttpStatus.CONFLICT);
     }

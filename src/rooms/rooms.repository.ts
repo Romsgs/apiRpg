@@ -18,6 +18,8 @@ export class RoomsRepository {
     return room;
   }
   async deleteRoom(roomId) {
+    console.log('inside repository', roomId);
+
     return await this.prisma.room.delete({ where: { id: roomId } });
   }
   async queryRooms() {
