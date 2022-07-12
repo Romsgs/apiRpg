@@ -1,15 +1,19 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { RoomsRepository } from './rooms.repository';
-import argon from 'argon2';
+import * as argon from 'argon2';
+import logger from 'src/utils/logger';
 @Injectable()
 export class RoomsService {
   constructor(@Inject(RoomsRepository) private repository: RoomsRepository) {}
-  makeRoom(data) {
+  async makeRoom(data) {
     try {
-      console.log('password', data.password);
-      data.password = argon.hash(data.password);
-      console.log(data.password);
-      return this.repository.createRoom(data);
+      const newRoom = data;
+      logger.warn('dentro do server');
+      console.log('password', newRoom.password);
+      const hash = await argon.hash(newRoom.password);
+      newRoom.password = hash;
+      console.log(newRoom.password);
+      return this.repository.createRoom(newRoom);
     } catch (error) {
       console.log(error);
       throw new HttpException(

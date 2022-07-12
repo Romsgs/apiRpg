@@ -8,7 +8,7 @@ export class UserRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
   async createUser(userData) {
     try {
-      userData.password = argon.hash(userData.password);
+      userData.password = await argon.hash(userData.password);
       return await this.prisma.user.create({
         data: {
           name: userData.name,
