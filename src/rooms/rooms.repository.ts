@@ -19,6 +19,8 @@ export class RoomsRepository {
     return await this.prisma.room.delete({ where: { id: roomId } });
   }
   async queryRooms() {
-    return this.prisma.room.findMany();
+    const allRooms = await this.prisma.room.findMany();
+    console.log(allRooms);
+    return allRooms;
   }
 }
