@@ -6,7 +6,9 @@ export class RoomsService {
   constructor(@Inject(RoomsRepository) private repository: RoomsRepository) {}
   makeRoom(data) {
     try {
+      console.log(data.password);
       data.password = argon.hash(data.password);
+      console.log(data.password);
       return this.repository.createRoom(data);
     } catch (error) {
       console.log(error);

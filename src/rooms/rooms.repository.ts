@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import logger from 'src/utils/logger';
 @Injectable()
 export class RoomsRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
@@ -12,7 +12,9 @@ export class RoomsRepository {
         password: roomConfig.password,
       },
     });
+    logger.info(room);
     delete room.password;
+    logger.info(room);
     return room;
   }
   async deleteRoom(roomId) {
@@ -20,7 +22,7 @@ export class RoomsRepository {
   }
   async queryRooms() {
     const allRooms = await this.prisma.room.findMany();
-    console.log(allRooms);
+    logger.info(allRooms);
     return allRooms;
   }
 }
