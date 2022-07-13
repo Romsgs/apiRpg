@@ -15,8 +15,8 @@ export class UserService {
   async updateUser(body: IUpdateUserDTO) {
     return this.repository.updateUser(body);
   }
-  queryUsers() {
-    const allUsers: any = this.repository.queryUsers();
+  async queryUsers() {
+    const allUsers: any = await this.repository.queryUsers();
     allUsers.forEach((room, i) => {
       delete allUsers[i].password;
     });
