@@ -17,8 +17,26 @@ export class ICreateUserDTO {
   @IsString()
   @IsNotEmpty()
   password: string;
+  @IsString()
+  @IsNotEmpty()
+  email: string;
 }
-
+export class IUpdateUserDTO {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+}
+export class IUpdatePassDTO {
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
 export class IDeleteUserDTO {
   @IsString()
   @IsNotEmpty()

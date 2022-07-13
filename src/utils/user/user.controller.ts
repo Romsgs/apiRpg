@@ -9,25 +9,33 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import {
+  ICreateUserDTO,
+  IDeleteUserDTO,
+  IUpdatePassDTO,
+  IUpdateUserDTO,
+} from './dto';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
   constructor(@Inject(UserService) private service: UserService) {}
   @Post()
-  createUser(@Body() body) {
-    return this.service.createUser(body);
+  async createUser(@Body() body: ICreateUserDTO) {
+    const newUser: ICreateUserDTO = await this.service.createUser(body);
+    delete newUser.password;
+    return newUser;
   }
   @Delete()
-  deleteUser(@Query() id) {
+  deleteUser(@Query() id: IDeleteUserDTO) {
     return this.service.deleteUser(id);
   }
   @Put()
-  updateUser(@Body() body) {
+  updateUser(@Body() body: IUpdateUserDTO) {
     return this.service.updateUser(body);
   }
   @Patch()
-  updateUserPassword(@Body() body) {
+  updateUserPassword(@Body() body: IUpdatePassDTO) {
     return this.service.updatePassword(body);
   }
   @Get()
