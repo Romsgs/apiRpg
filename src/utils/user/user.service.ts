@@ -1,6 +1,6 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import argon from 'argon2';
+import * as argon from 'argon2';
 import { IUpdateUserDTO } from './dto';
 @Injectable()
 export class UserService {
