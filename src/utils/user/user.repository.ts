@@ -7,6 +7,12 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 export class UserRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
   async createUser(userData) {
+    const users = await this.prisma.user.findMany();
+    users.forEach((e, i) => {
+      if (e.email == userData.email) {
+        throw new HttpException('email already exists', HttpStatus.CONFLICT);
+      }
+    });
     try {
       return await this.prisma.user.create({
         data: {

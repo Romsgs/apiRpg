@@ -6,17 +6,27 @@ import { IQueryRooms } from './dto';
 export class RoomsRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
   async createRoom(roomConfig) {
-    const room = await this.prisma.room.create({
-      data: {
-        name: roomConfig.name,
-        master: roomConfig.master,
-        password: roomConfig.password,
-      },
-    });
-    logger.info(room);
-    delete room.password;
-    logger.info(room);
-    return room;
+    try {
+      const rooms = await this.prisma.room.findMany();
+      rooms.forEach((e, i) => {
+        if (e.name === roomConfig) {
+          throw new HttpException('name taken', HttpStatus.CONFLICT);
+        }
+      });
+      const room = await this.prisma.room.create({
+        data: {
+          name: roomConfig.name,
+          master: roomConfig.master,
+          password: roomConfig.password,
+        },
+      });
+      logger.info(room);
+      delete room.password;
+      logger.info(room);
+      return room;
+    } catch {
+      throw new HttpException('name taken', HttpStatus.CONFLICT);
+    }
   }
   async deleteRoom(roomId) {
     try {
