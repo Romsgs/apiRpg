@@ -31,4 +31,5 @@ export interface IQueryRooms {
   id: string;
   name: string;
   master: string;
+  password: string;
 }

@@ -16,7 +16,7 @@ export class UserService {
     return this.repository.updateUser(body);
   }
   queryUsers() {
-    const allUsers: IQueryUsers[] = this.repository.queryUsers();
+    const allUsers: any = this.repository.queryUsers();
     allUsers.forEach((room, i) => {
       delete allUsers[i].password;
     });
