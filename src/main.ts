@@ -6,7 +6,7 @@ import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from './swaggerDocument/SwaggerDocument.json';
 import SwaggerCss from './swaggerDocument/swaggerStyles';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: false });
+  const app = await NestFactory.create(AppModule, { cors: { origin: '*' } });
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
