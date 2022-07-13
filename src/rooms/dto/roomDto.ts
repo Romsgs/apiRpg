@@ -27,3 +27,8 @@ export class IDeleteRoomDTO {
   @IsNotEmpty()
   id: string;
 }
+export interface IQueryRooms {
+  id: string;
+  name: string;
+  master: string;
+}

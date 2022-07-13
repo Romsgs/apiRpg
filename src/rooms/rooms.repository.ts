@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import logger from 'src/utils/logger';
+import { IQueryRooms } from './dto';
 @Injectable()
 export class RoomsRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
@@ -22,12 +23,7 @@ export class RoomsRepository {
 
     return await this.prisma.room.delete({ where: { id: roomId } });
   }
-  async queryRooms() {
-    const allRooms = await this.prisma.room.findMany();
-    allRooms.forEach((room, i) => {
-      delete allRooms[i].password;
-    });
-    console.log(allRooms);
-    return allRooms;
+  async queryRooms(): Promise<Array<IQueryRooms>> {
+    return await this.prisma.room.findMany();
   }
 }

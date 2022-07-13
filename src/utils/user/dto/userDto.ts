@@ -42,3 +42,9 @@ export class IDeleteUserDTO {
   @IsNotEmpty()
   id: string;
 }
+
+export interface IQueryUsers {
+  id: string;
+  name: string;
+  email: string;
+}

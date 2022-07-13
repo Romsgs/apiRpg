@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { RoomsRepository } from './rooms.repository';
 import * as argon from 'argon2';
 import logger from 'src/utils/logger';
+import { IQueryRooms } from './dto';
 @Injectable()
 export class RoomsService {
   constructor(@Inject(RoomsRepository) private repository: RoomsRepository) {}
@@ -32,7 +33,12 @@ export class RoomsService {
       );
     }
   }
-  queryRooms() {
-    return this.repository.queryRooms();
+  async queryRooms() {
+    const allRooms: any = await this.repository.queryRooms();
+    allRooms.forEach((room, i) => {
+      delete allRooms[i].password;
+    });
+    console.log(allRooms);
+    return allRooms;
   }
 }

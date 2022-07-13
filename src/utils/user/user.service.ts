@@ -1,7 +1,7 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import * as argon from 'argon2';
-import { IUpdateUserDTO } from './dto';
+import { IQueryUsers, IUpdateUserDTO } from './dto';
 @Injectable()
 export class UserService {
   constructor(@Inject(UserRepository) private repository: UserRepository) {}
@@ -16,7 +16,12 @@ export class UserService {
     return this.repository.updateUser(body);
   }
   queryUsers() {
-    return this.repository.queryUsers();
+    const allUsers: IQueryUsers[] = this.repository.queryUsers();
+    allUsers.forEach((room, i) => {
+      delete allUsers[i].password;
+    });
+
+    return allUsers;
   }
   async updatePassword(body) {
     body.password = await argon.hash(body.password);
