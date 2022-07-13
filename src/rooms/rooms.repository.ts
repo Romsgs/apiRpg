@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import logger from 'src/utils/logger';
 import { IQueryRooms } from './dto';
@@ -19,9 +19,11 @@ export class RoomsRepository {
     return room;
   }
   async deleteRoom(roomId) {
-    console.log('inside repository', roomId);
-
-    return await this.prisma.room.delete({ where: { id: roomId } });
+    try {
+      return await this.prisma.room.delete({ where: { id: roomId } });
+    } catch (error) {
+      throw new HttpException('id not found', HttpStatus.NOT_FOUND);
+    }
   }
   async queryRooms(): Promise<Array<IQueryRooms>> {
     return await this.prisma.room.findMany();

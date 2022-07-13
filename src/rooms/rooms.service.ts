@@ -24,14 +24,7 @@ export class RoomsService {
     }
   }
   deleteRoom(roomId) {
-    try {
-      this.repository.deleteRoom(roomId);
-    } catch (error) {
-      throw new HttpException(
-        'not possible to delete this room',
-        HttpStatus.CONFLICT,
-      );
-    }
+    this.repository.deleteRoom(roomId);
   }
   async queryRooms() {
     const allRooms: any = await this.repository.queryRooms();

@@ -28,7 +28,8 @@ export class UserController {
   }
   @Delete()
   deleteUser(@Query() id: IDeleteUserDTO) {
-    return this.service.deleteUser(id);
+    this.service.deleteUser(id.id);
+    return 'OK';
   }
   @Put()
   updateUser(@Body() body: IUpdateUserDTO) {
