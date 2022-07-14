@@ -1,21 +1,19 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { Inject, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
-import logger from 'src/utils/logger';
+import { UserService } from 'src/user/user.service';
+import { ISignInDto, ISignUpDto } from './dto';
 @Injectable()
 export class AuthService {
-  constructor(@Inject(UserService) private readonly userService: UserService) {}
+  constructor(@Inject(UserService) private userService: UserService) {}
+  async signup(userData: ISignUpDto) {
+    return await this.userService.createUser(userData);
+  }
 
-  async validateUser(username: string, password: string) {
-    const user = await this.userService.queryUsersAuth(username);
-    if (!user) {
-      throw new HttpException('404', HttpStatus.NOT_FOUND);
-    }
-    if (!argon.verify(user.password, password)) {
-      logger.fatal('password issue');
+  async signin(userData: ISignInDto) {
+    const targetUser = await this.userService.queryUsersByEmail(userData.email);
+    if (!(await argon.verify(targetUser.password, userData.password))) {
       return null;
     }
-    console.table(user);
-    return user;
+    return 'I have signed Up';
   }
 }

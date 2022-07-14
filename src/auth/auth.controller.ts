@@ -1,26 +1,16 @@
-import {
-  Body,
-  Controller,
-  Inject,
-  Post,
-  Session,
-  UseGuards,
-} from '@nestjs/common';
-import { LocalAuthGuard } from 'src/utils/local-guard';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { ISignUpDto, ISignInDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(@Inject(AuthService) private authService: AuthService) {}
-  // @UseGuards(LocalAuthGuard)
-  @Post()
-  async login(@Body() body: any) {
-    console.log(body);
-    this.authService.validateUser(body.name, body.password);
-    console.log('logged');
+  @Post('signup')
+  signup(@Body() body: ISignUpDto) {
+    return this.authService.signup(body);
   }
-
-  async signup(@Session() session: Record<string, any>) {
-    session.authentication = true;
+  @Post('signin')
+  signin(@Body() body: ISignInDto) {
+    return this.authService.signin(body);
   }
 }

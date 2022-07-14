@@ -20,12 +20,12 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
   constructor(@Inject(UserService) private service: UserService) {}
-  @Post()
-  async createUser(@Body() body: ICreateUserDTO) {
-    const newUser: ICreateUserDTO = await this.service.createUser(body);
-    delete newUser.password;
-    return newUser;
-  }
+  // @Post()
+  // async createUser(@Body() body: ICreateUserDTO) {
+  //   const newUser: ICreateUserDTO = await this.service.createUser(body);
+  //   delete newUser.password;
+  //   return newUser;
+  // }
   @Delete()
   deleteUser(@Query() id: IDeleteUserDTO) {
     this.service.deleteUser(id.id);

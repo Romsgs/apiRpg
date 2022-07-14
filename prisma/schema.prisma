@@ -12,7 +12,7 @@ datasource db {
 
 model room {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
+  name     String @unique()
   master   String
   password String
 }
@@ -20,7 +20,7 @@ model room {
 model user {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String
-  email    String
+  email    String @unique()
   password String
   chars    char[]
 }

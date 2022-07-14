@@ -3,8 +3,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { RoomsModule } from './rooms/rooms.module';
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,8 +12,8 @@ import { PassportModule } from '@nestjs/passport';
     ConfigModule.forRoot({ isGlobal: true }),
     RoomsModule,
     UserModule,
-    AuthModule,
     PassportModule.register({ session: true }),
+    AuthModule,
   ],
 })
 export class AppModule {}

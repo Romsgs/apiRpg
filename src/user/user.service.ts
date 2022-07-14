@@ -23,8 +23,12 @@ export class UserService {
 
     return allUsers;
   }
-  async queryUsersAuth(nameToFind: string) {
+  async queryUsersByName(nameToFind: string) {
     const user: any = await this.repository.queryUsersByName(nameToFind);
+    return user;
+  }
+  async queryUsersByEmail(emailToFind: string) {
+    const user: any = await this.repository.queryUsersByEmail(emailToFind);
     return user;
   }
   async queryUsersById(nameToFind: string) {

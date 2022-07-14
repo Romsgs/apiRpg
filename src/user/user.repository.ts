@@ -61,10 +61,16 @@ export class UserRepository {
     try {
       return await this.prisma.user.findFirst({ where: { name: nameToFind } });
     } catch (error) {
-      throw new HttpException(
-        'cant reach Database',
-        HttpStatus.FAILED_DEPENDENCY,
-      );
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    }
+  }
+  async queryUsersByEmail(emailToFind: string) {
+    try {
+      return await this.prisma.user.findFirst({
+        where: { email: emailToFind },
+      });
+    } catch (error) {
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
     }
   }
   async queryUsersById(id: string) {
