@@ -23,6 +23,14 @@ export class UserService {
 
     return allUsers;
   }
+  async queryUsersAuth(nameToFind: string) {
+    const user: any = await this.repository.queryUsersByName(nameToFind);
+    return user;
+  }
+  async queryUsersById(nameToFind: string) {
+    const user: any = await this.repository.queryUsersById(nameToFind);
+    return user;
+  }
   async updatePassword(body) {
     body.password = await argon.hash(body.password);
     return this.repository.updatePassword(body);

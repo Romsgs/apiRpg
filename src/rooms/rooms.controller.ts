@@ -8,6 +8,7 @@ import {
   Inject,
   Post,
   Query,
+  Session,
 } from '@nestjs/common';
 import logger from 'src/utils/logger';
 import { ICreateRoomDTO, IDeleteRoomDTO } from './dto';
@@ -34,15 +35,20 @@ export class RoomsController {
     this.service.deleteRoom(id.id);
     return 'OK';
   }
+
   @Get()
-  queryRoom() {
-    try {
-      return this.service.queryRooms();
-    } catch (error) {
-      throw new HttpException(
-        'infernal server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+  queryRoom(@Session() session: Record<string, any>) {
+    if (session.authenticated) {
+      try {
+        return this.service.queryRooms();
+      } catch (error) {
+        throw new HttpException(
+          'infernal server error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    } else {
+      return new HttpException('need to login', HttpStatus.UNAUTHORIZED);
     }
   }
 }

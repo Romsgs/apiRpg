@@ -57,6 +57,26 @@ export class UserRepository {
       );
     }
   }
+  async queryUsersByName(nameToFind: string) {
+    try {
+      return await this.prisma.user.findFirst({ where: { name: nameToFind } });
+    } catch (error) {
+      throw new HttpException(
+        'cant reach Database',
+        HttpStatus.FAILED_DEPENDENCY,
+      );
+    }
+  }
+  async queryUsersById(id: string) {
+    try {
+      return await this.prisma.user.findFirst({ where: { id: id } });
+    } catch (error) {
+      throw new HttpException(
+        'cant reach Database',
+        HttpStatus.FAILED_DEPENDENCY,
+      );
+    }
+  }
   async updatePassword(body) {
     try {
       await this.prisma.user.update({
