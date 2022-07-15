@@ -8,7 +8,9 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ICreateUserDTO,
   IDeleteUserDTO,
@@ -26,6 +28,7 @@ export class UserController {
   //   delete newUser.password;
   //   return newUser;
   // }
+  @UseGuards(AuthGuard('jwt'))
   @Delete()
   deleteUser(@Query() id: IDeleteUserDTO) {
     this.service.deleteUser(id.id);
@@ -39,6 +42,7 @@ export class UserController {
   updateUserPassword(@Body() body: IUpdatePassDTO) {
     return this.service.updatePassword(body);
   }
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   queryUsers() {
     return this.service.queryUsers();
